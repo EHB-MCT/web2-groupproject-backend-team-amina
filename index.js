@@ -25,7 +25,7 @@ client.connect(err => {
 //CREATE - SAVE(READ) - UPDATE - DELETE functionality
 //Root route
 app.get('/', (req, res) => {
-  res.status(300).redirect('info.html');
+  res.status(300).redirect('/info.html');
 });
 
 //Return all challenges from db
