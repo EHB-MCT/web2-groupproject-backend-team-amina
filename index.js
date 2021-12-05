@@ -7,18 +7,13 @@ const port = 3000
 const username = "team_amina"
 const password = "thisisourpassword"
 
-app.use(express.static('public')) //public folder
+app.use(express.static('public')) //folder where he gets his data is going to be called public
 
 //Create the mongo client use
-const uri = `mongodb+srv://<${username}>:<${password}>@cluster0.ruiua.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";`
+const uri = `mongodb+srv://${username}:${password}@cluster0.ruiua.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";`
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-});
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
 });
 
 
@@ -29,7 +24,26 @@ app.get('/', (req, res) => {
 });
 
 //Return all challenges from db
-app.get('/challenges', async (req, res) => {});
+app.get('/challenges', async (req, res) => {
+  try {
+    //connect to the database
+    await client.connect();
+    const db = client.db("session7");
+    // Use the collection "Session7"
+    const collection = db.collection("challenges");
+    // Find document
+    const myDoc = await collection.find({}).toArray();
+
+    // Print to the console
+    console.log(myDoc);
+    //Send back the data with the response
+    res.status(200).send(myDoc);
+} catch (err) { //catch an error
+    console.log(err.stack);
+} finally {
+    await client.close();
+}
+});
 
 // challenges/:id
 app.get('/challenges/:id', async (req, res) => {});
