@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node /src/index.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/EHB-MCT/web2-groupproject-backend-team-amina#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "http-server": "^14.0.0",
     "mongodb": "^4.2.1"
   }
 }
