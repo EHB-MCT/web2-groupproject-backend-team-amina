@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
   res.status(300).redirect('info.html');
 });
 
-//Return all challenges from db
+//Return all challenges from database
 app.get('/challenges', async (req, res) => {
   try {
     //connect to the database
@@ -32,12 +32,12 @@ app.get('/challenges', async (req, res) => {
     // Use the collection "Session7"
     const collection = db.collection("challenges");
     // Find document
-    const myDoc = await collection.find({}).toArray();
+    const data = await collection.find({}).toArray();
 
     // Print to the console
-    console.log(myDoc);
+    console.log(data);
     //Send back the data with the response
-    res.status(200).send(myDoc);
+    res.status(200).send(data)
 } catch (err) { //catch an error
     console.log(err.stack);
 } finally {
@@ -45,11 +45,10 @@ app.get('/challenges', async (req, res) => {
 }
 });
 
-// challenges/:id
-app.get('/challenges/:id', async (req, res) => {});
-
 //save a challenge
-app.post('/challenges', async (req, res) => {});
+app.post('/challenges', async (req, res) => {
+
+});
 
 //update a challenge
 app.put('/challenges/:id', async (req, res) => {
