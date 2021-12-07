@@ -3,11 +3,13 @@ const {
   MongoClient
 } = require('mongodb');
 const app = express()
+const cors = require('cors')
 const port = process.env.PORT || 3000
 const username = "team_amina"
 const password = "thisisourpassword"
 
 app.use(express.static('public')) //folder where he gets his data is going to be called public
+app.use(cors())
 
 //Create the mongo client use
 const uri = `mongodb+srv://${username}:${password}@cluster0.ruiua.mongodb.net/session7?retryWrites=true&w=majority";`
@@ -36,7 +38,7 @@ app.get('/challenges', async (req, res) => {
 
     // Print to the console
     console.log(data);
-    //Send back the data with the response
+
     res.status(200).send(data)
   } catch (err) { //catch an error
     console.log(err.stack);
