@@ -2,6 +2,7 @@ const express = require('express')
 const {
   MongoClient
 } = require('mongodb');
+const bodyParser =  require ('body-parser')
 const app = express()
 const cors = require('cors')
 const port = process.env.PORT || 3000
@@ -10,6 +11,7 @@ const password = "thisisourpassword"
 
 app.use(express.static('public')) //folder where he gets his data is going to be called public
 app.use(cors())
+app.use(bodyParser.json())
 
 //Create the mongo client use
 const uri = `mongodb+srv://${username}:${password}@cluster0.ruiua.mongodb.net/session7?retryWrites=true&w=majority";`
@@ -49,6 +51,34 @@ app.get('/challenges', async (req, res) => {
 
 //save a challenge
 app.post('/challenges', async (req, res) => {
+
+  if (!req.body.name || !req.body.course || !req.body.points ){
+    res.status(400).send("please fill everything in")
+  }
+  
+  try {
+
+    await client.connect()
+    const data = client.db("session7").collection("challenges")
+    const checkData = await data.findOne({name: req.body.name})
+
+    let newChallenge = {
+        name: req.body.name,
+        course: req.body.course,
+        points: req.body.points
+    }
+
+    if(checkData){
+      res.status(400).send("this challenge already exist")
+    }
+
+    let insertresult = await data.insertOne(newChallenge)
+    res.status(200).send(`succesfull sent ${insertresult} to database`)
+
+    
+  } catch (error) {
+    console.log(error);
+  }
 
 });
 
