@@ -3,14 +3,14 @@ const {
   MongoClient
 } = require('mongodb');
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 const username = "team_amina"
 const password = "thisisourpassword"
 
 app.use(express.static('public')) //folder where he gets his data is going to be called public
 
 //Create the mongo client use
-const uri = `mongodb+srv://${username}:${password}@cluster0.ruiua.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";`
+const uri = `mongodb+srv://${username}:${password}@cluster0.ruiua.mongodb.net/session7?retryWrites=true&w=majority";`
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -38,11 +38,11 @@ app.get('/challenges', async (req, res) => {
     console.log(data);
     //Send back the data with the response
     res.status(200).send(data)
-} catch (err) { //catch an error
+  } catch (err) { //catch an error
     console.log(err.stack);
-} finally {
+  } finally {
     await client.close();
-}
+  }
 });
 
 //save a challenge
