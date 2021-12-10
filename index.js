@@ -2,7 +2,7 @@ const express = require('express')
 const {
   MongoClient
 } = require('mongodb');
-const bodyParser =  require ('body-parser')
+const bodyParser = require('body-parser')
 const app = express()
 const cors = require('cors')
 const port = process.env.PORT || 3000
@@ -52,34 +52,40 @@ app.get('/challenges', async (req, res) => {
 //save a challenge
 app.post('/challenges', async (req, res) => {
 
-  if (!req.body.name || !req.body.course || !req.body.points ){
+  if (!req.body.name || !req.body.course || !req.body.points) {
     res.status(400).send("please fill everything in")
+    return
   }
-  
+
   try {
 
     await client.connect()
     const data = client.db("session7").collection("challenges")
-    const checkData = await data.findOne({name: req.body.name})
+    const checkData = await data.findOne({
+      name: req.body.name
+    })
 
     let newChallenge = {
-        name: req.body.name,
-        course: req.body.course,
-        points: req.body.points
+      name: req.body.name,
+      course: req.body.course,
+      points: req.body.points
     }
 
-    if(checkData){
+    if (checkData) {
       res.status(400).send("this challenge already exist")
+      return;
     }
 
     let insertresult = await data.insertOne(newChallenge)
     res.status(200).send(`succesfull sent ${insertresult} to database`)
 
-    
+
   } catch (error) {
     console.log(error);
+    res.status(400).send(error)
+  } finally {
+    await client.close();
   }
-
 });
 
 //update a challenge
