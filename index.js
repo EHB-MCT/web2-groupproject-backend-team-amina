@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 });
 
 //Return all challenges from database
-app.get('/challenges', async (req, res) => {
+app.get('/challenge', async (req, res) => {
   try {
     //connect to the database
     await client.connect();
